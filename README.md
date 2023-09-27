@@ -16,4 +16,5 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 #
-keytool -list -v -keystore "C:\Users\user\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+keytool -list -v -keystore "C:\Users\<your_username>\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+
