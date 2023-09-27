@@ -12,7 +12,20 @@
           "package_name": "com.example.wechat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "590851740723-e37rais6jlus495olnq590fe0bdr5heg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wechat",
+            "certificate_hash": "4eb37e9d14ec8f515ab11f6386aa6e0946259fc7"
+          }
+        },
+        {
+          "client_id": "590851740723-7vd94ug9iv8n2oi7pedu0bpgrpfufd34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBNROjm3YVQrXd9np4PdsZl5v1UdvzYq9Y"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590851740723-7vd94ug9iv8n2oi7pedu0bpgrpfufd34.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "590851740723-1nc3cf6qbt2ulsilvqui2cgb3vj910m4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wechat"
+              }
+            }
+          ]
         }
       }
     }

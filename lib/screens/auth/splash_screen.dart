@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return const HomeScreen();
+            return const LoginScreen();
           },
         ));
       },

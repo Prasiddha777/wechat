@@ -18,7 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('We Chat'),
         centerTitle: false,
-        leading: const Icon(CupertinoIcons.home),
+        leading: const Icon(
+          CupertinoIcons.chat_bubble_2_fill,
+          size: 30,
+          color: Colors.deepPurple,
+        ),
         actions: [
           IconButton(
               onPressed: () {},
