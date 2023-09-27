@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wechat/screens/auth/login_screen.dart';
 import 'package:wechat/screens/home_screen.dart';
+
+//global object for accessing device screen size
+late Size mq;
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +34,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }
