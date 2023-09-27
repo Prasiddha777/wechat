@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat/main.dart';
+import 'package:wechat/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +11,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isAnimate = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () {
+        setState(() {
+          _isAnimate = true;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
@@ -17,10 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
           child: Stack(
         children: [
-          Positioned(
+          AnimatedPositioned(
             top: mq.height * .15,
-            left: mq.width * .25,
+            left: _isAnimate ? mq.width * .25 : mq.width * .5,
             width: mq.width * .5,
+            duration: const Duration(seconds: 1),
             child: const Icon(
               CupertinoIcons.chat_bubble_2,
               color: Colors.indigo,
@@ -33,7 +50,13 @@ class _LoginScreenState extends State<LoginScreen> {
             width: mq.width * .9,
             height: mq.height * .06,
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                    ));
+              },
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
                 elevation: 1,
