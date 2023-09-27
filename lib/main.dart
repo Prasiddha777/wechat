@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wechat/screens/auth/login_screen.dart';
+import 'package:wechat/screens/auth/splash_screen.dart';
 import 'package:wechat/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -8,6 +9,7 @@ import 'firebase_options.dart';
 late Size mq;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   _initializeFirebase();
   runApp(const MyApp());
 }
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
