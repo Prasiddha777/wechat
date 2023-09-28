@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wechat/helper/dialogs.dart';
 import 'package:wechat/main.dart';
 import 'package:wechat/screens/home_screen.dart';
 
@@ -31,34 +33,45 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _handleGoogleBtnClick() {
+    Dialogs.showProgressBar(context);
     signInWithGoogle().then((value) {
-      // log('User: ${value.user}' as );
-      print('User: ${value.user}');
-      print('User: ${value.additionalUserInfo}');
+      Navigator.pop(context);
+      if (value != null) {
+        print('User: ${value.user}');
+        print('User: ${value.additionalUserInfo}');
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ));
+      }
+      // log('User: ${value.user}' as );
     });
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      await InternetAddress.lookup('google.com');
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print('_signInWithGoogle: $e');
+      Dialogs.showSnackBar(context, 'Something went Wrong(Check Internet)');
+      return null;
+    }
   }
 
   @override

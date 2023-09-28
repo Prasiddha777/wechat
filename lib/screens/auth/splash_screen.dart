@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,11 +26,21 @@ class _SplashScreenState extends State<SplashScreen> {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
         SystemChrome.setSystemUIOverlayStyle(
             const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-            return const LoginScreen();
-          },
-        ));
+
+        if (FirebaseAuth.instance.currentUser != null) {
+          print('\nUser :${FirebaseAuth.instance.currentUser}');
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return const HomeScreen();
+            },
+          ));
+        } else {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return const LoginScreen();
+            },
+          ));
+        }
       },
     );
   }
