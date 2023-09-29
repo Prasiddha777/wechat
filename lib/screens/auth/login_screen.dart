@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print('User: ${value.additionalUserInfo}');
 
         if ((await APIs.userExist())) {
+          // ignore: use_build_context_synchronously
           Navigator.push(
               context,
               MaterialPageRoute(

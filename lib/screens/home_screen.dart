@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:wechat/api/api.dart';
 import 'package:wechat/main.dart';
 import 'package:wechat/models/chat_user.dart';
 import 'package:wechat/widgets/chat_user_card.dart';
-import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
