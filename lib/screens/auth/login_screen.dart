@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wechat/api/api.dart';
 import 'package:wechat/helper/dialogs.dart';
 import 'package:wechat/main.dart';
 import 'package:wechat/screens/home_screen.dart';
@@ -34,17 +35,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _handleGoogleBtnClick() {
     Dialogs.showProgressBar(context);
-    signInWithGoogle().then((value) {
+    signInWithGoogle().then((value) async {
       Navigator.pop(context);
       if (value != null) {
         print('User: ${value.user}');
         print('User: ${value.additionalUserInfo}');
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ));
+        if ((await APIs.userExist())) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ));
+        } else {
+          await APIs.createUser().then((value) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ));
+          });
+        }
       }
       // log('User: ${value.user}' as );
     });
