@@ -17,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<ChatUser> list = [];
+  final List<ChatUser> _searchList = [];
+  bool isSearching = false;
 
   @override
   void initState() {
@@ -31,7 +33,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('We Chat'),
+          title: isSearching
+              ? TextField(
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Name,Email......',
+                  ),
+                  autofocus: true,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 0.5,
+                  ),
+                  onChanged: (value) {
+                    //search logic
+                    _searchList.clear();
+                    for (var i in list) {
+                      if (i.name.toLowerCase().contains(value.toLowerCase()) ||
+                          i.email.toLowerCase().contains(value.toLowerCase())) {
+                        _searchList.add(i);
+                      }
+                      setState(() {
+                        _searchList;
+                      });
+                    }
+                  },
+                )
+              : const Text('We Chat'),
           centerTitle: false,
           leading: const Icon(
             CupertinoIcons.chat_bubble_2_fill,
@@ -40,10 +67,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.search_rounded,
-                )),
+              onPressed: () {
+                setState(() {
+                  isSearching = !isSearching;
+                });
+              },
+              icon: Icon(
+                isSearching ? CupertinoIcons.clear_circled_solid : Icons.search_rounded,
+              ),
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(
@@ -92,14 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 if (list.isNotEmpty) {
                   return ListView.builder(
-                    itemCount: list.length,
+                    itemCount: isSearching ? _searchList.length : list.length,
                     padding: EdgeInsets.only(
                       top: mq.height * .01,
                     ),
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return ChatUserCard(
-                        user: list[index],
+                        user: isSearching ? _searchList[index] : list[index],
                       );
                     },
                   );
