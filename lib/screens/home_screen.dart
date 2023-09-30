@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wechat/api/api.dart';
 import 'package:wechat/main.dart';
 import 'package:wechat/models/chat_user.dart';
+import 'package:wechat/screens/profile_screen.dart';
 import 'package:wechat/widgets/chat_user_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +17,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<ChatUser> list = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    APIs.getSelfInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
@@ -36,10 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.search_rounded,
                 )),
             IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.more_vert_outlined,
-                ))
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileScreen(
+                        user: APIs.me,
+                      ),
+                    ));
+              },
+              icon: const Icon(
+                Icons.more_vert_outlined,
+              ),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -54,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         //
         body: StreamBuilder(
-          stream: APIs.fireStore.collection('users').snapshots(),
+          stream: APIs.getAllUsers(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:

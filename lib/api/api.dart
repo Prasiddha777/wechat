@@ -17,6 +17,26 @@ class APIs {
     return (await fireStore.collection('users').doc(auth.currentUser!.uid).get()).exists;
   }
 
+  //for storing self info
+  static late ChatUser me;
+
+  //for getting current user info
+  static Future<void> getSelfInfo() async {
+    await fireStore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .get()
+        .then((value) async {
+      if (value.exists) {
+        me = ChatUser.fromJson(value.data()!);
+      } else {
+        await createUser().then((value) {
+          getSelfInfo();
+        });
+      }
+    });
+  }
+
   //for creating a new user
   static Future<void> createUser() async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
@@ -34,5 +54,13 @@ class APIs {
         .collection('users')
         .doc(auth.currentUser!.uid)
         .set(chatUser.toJson());
+  }
+
+  //get users
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
+    return fireStore
+        .collection('users')
+        .where('id', isNotEqualTo: auth.currentUser!.uid)
+        .snapshots();
   }
 }
