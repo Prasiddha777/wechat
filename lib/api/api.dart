@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wechat/models/chat_user.dart';
+import 'package:wechat/models/message.dart';
 
 class APIs {
   //for authentication
@@ -70,5 +71,47 @@ class APIs {
       'name': me.name,
       'about': me.about,
     });
+  }
+
+  /************ CHAT SCREEN REALTED APIs *****************/
+
+  // conversation id
+  static String getConversationId(String id) {
+    return auth.currentUser!.uid.hashCode <= id.hashCode
+        ? '${auth.currentUser!.uid}_$id'
+        : '${id}_${auth.currentUser!.uid}';
+  }
+
+  //for getting messages
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(ChatUser user) {
+    return fireStore
+        .collection('chats/${getConversationId(user.id)}/messages')
+        .snapshots();
+  }
+
+  //foe sending messages
+  static Future<void> sendMessages(ChatUser chatUser, String msg) async {
+    //message sending time also used as id
+    final time = DateTime.now().millisecondsSinceEpoch.toString();
+
+    //message to send
+    final Message message = Message(
+      msg: msg,
+      toId: chatUser.id,
+      read: '',
+      type: Type.text,
+      fromId: auth.currentUser!.uid,
+      sent: time,
+    );
+    final ref = fireStore.collection('chats/${getConversationId(chatUser.id)}/messages');
+    await ref.doc(time).set(message.toJson());
+  }
+
+  //
+  static Future<void> updateMessageReadStatus(Message message) async {
+    fireStore
+        .collection('chats/${getConversationId(message.fromId)}/messages')
+        .doc(message.sent)
+        .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
   }
 }
